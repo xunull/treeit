@@ -1,0 +1,28 @@
+language: python
+cache: pip
+
+python:
+  - 3.5
+  - 3.6
+  - 3.7
+  - 3.8
+
+jobs:
+  fast_finish: true
+  include:
+    - python: 3.8
+      env: TOXENV=black
+    - python: 3.8
+      env: TOXENV=flake8
+    - python: 3.8
+      env: TOXENV=isort
+install:
+  - pip install tox-travis codecov
+
+script:
+  - tox
+after_success:
+  - codecov -e TOXENV CI TRAVIS_BUILD_ID TRAVIS TRAVIS_BRANCH TRAVIS_JOB_NUMBER TRAVIS_PULL_REQUEST TRAVIS_JOB_ID TRAVIS_REPO_SLUG TRAVIS_COMMIT
+
+notifications:
+  email: false
